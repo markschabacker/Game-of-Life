@@ -19,7 +19,7 @@ describe LiveCell do
   end
 
   context "lives when" do
-    it "has 2 live neighbots" do
+    it "has 2 live neighbors" do
       LiveCell.new.alive_next_iteration?(2).should be true
     end
 
