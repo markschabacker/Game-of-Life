@@ -13,43 +13,50 @@ describe Coordinates do
       coord.x.should be 0
       coord.y.should be 0
     end
-  end
 
-  it "returns 0.0 when calculating the distance to itself" do
-    coord = Coordinates.new
-    coord.distance_between(coord).should be_close(0, 0.1)
-  end
-  
-  1.upto(5) do |n|
-    it "returns #{n} when calculating the distance to a coordinate #{n} unit to the right" do
-      source_coord = Coordinates.new(0,0);
-      dest_coord = Coordinates.new(n,0);
-      source_coord.distance_between(dest_coord).should be_close(n, 0.1)
-    end
-    
-    it "returns #{n} when calculating the distance to a coordinate #{n} 1 unit to the left" do
-      source_coord = Coordinates.new(0,0);
-      dest_coord = Coordinates.new(-n,0);
-      source_coord.distance_between(dest_coord).should be_close(n, 0.1)
-    end
-      
-    it "returns #{n} when calculating the distance to a coordinate #{n} 1 unit up" do
-      source_coord = Coordinates.new(0,0);
-      dest_coord = Coordinates.new(0,-n);
-      source_coord.distance_between(dest_coord).should be_close(n, 0.1)
-    end
-    
-    it "returns #{n} when calculating the distance to a coordinate #{n} 1 unit down" do 
-      source_coord = Coordinates.new(0,0);
-      dest_coord = Coordinates.new(n,0);
-      source_coord.distance_between(dest_coord).should be_close(n, 0.1)
+    it "(-4,2) when initialized with parameters(-4,2)" do
+      coord = Coordinates.new(-4,2)
+      coord.x.should be -4
+      coord.y.should be 2
     end
   end
 
-  it "returns sqrt(2) when calculating the distance to a coordinate 1 unit up and one unit to the left" do
-    source_coord = Coordinates.new(0,0)
-    dest_coord = Coordinates.new(-1, -1)
-    source_coord.distance_between(dest_coord).should be_close(Math.sqrt(2), 0.1)
+  context "when calculating neighbors" do
+    [-1, 1].each do |n|
+      it "returns true when asked if a cell #{n} horizontal units away is its neighbor" do
+        source_coord = Coordinates.new
+        dest_coord = Coordinates.new(n, 0)
+        source_coord.is_neighbor?(dest_coord).should be true
+      end
+    end
+    
+    [-1, 1].each do |n|
+      it "returns true when asked if a cell #{n} vertical units away is its neighbor" do
+        source_coord = Coordinates.new
+        dest_coord = Coordinates.new(0, n)
+        source_coord.is_neighbor?(dest_coord).should be true
+      end
+    end
+    
+    [[-1,-1], [1,-1], [-1,1], [1,1]].each do |x,y|
+      it "returns true when asked if a cell #{x} horizontal units away and #{y} vertial units away is its neighbor" do
+        source_coord = Coordinates.new
+        dest_coord = Coordinates.new(x,y)
+        source_coord.is_neighbor?(dest_coord).should be true
+      end
+    end 
+
+    [ [-2,-2], [-1, -2], [0,-2], [1,-2],  [2,-2],
+      [-2,-1],                            [2,-1],
+      [-2,0],                             [2,0],
+      [-2,1],                             [2,1],
+      [-2,2], [-1,2], [0,2], [1,2],       [2,2]].each do |x,y|
+        it "returns false when asked if a cell #{x} horizontal units away and #{y} vertial units away is its neighbor" do
+          source_coord = Coordinates.new
+          dest_coord = Coordinates.new(x,y)
+          source_coord.is_neighbor?(dest_coord).should be false 
+        end
+      end
   end
 
 end
