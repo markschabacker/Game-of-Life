@@ -14,4 +14,8 @@ class LiveCell
                         dead_cell]
     life_truth_table[num_live_neighbors]
   end
+
+  def accept_visitor(visitor)
+    visitor.increment_count
+  end
 end

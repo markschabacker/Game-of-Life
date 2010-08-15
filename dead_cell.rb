@@ -13,4 +13,7 @@ class DeadCell
                         self]
     life_truth_table[num_live_neighbors]
   end
+  def accept_visitor(visitor)
+    #no-op
+  end
 end

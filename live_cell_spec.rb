@@ -28,4 +28,23 @@ describe LiveCell do
       LiveCell.new.alive_next_iteration?(3).should be_an_instance_of LiveCell
     end
   end
+  
+  it "increments a CellCountVisitor" do
+    visitor = CellCountVisitor.new
+    live_cell = LiveCell.new
+
+    visitor.visit_cell(live_cell)
+    visitor.count.should == 1
+  end
+
+  [1, 10, 1000].each do |n|
+    it "increments a CellCountVisitor initialized to #{n}" do
+      visitor = CellCountVisitor.new
+      visitor.count = n
+      live_cell = LiveCell.new
+
+      visitor.visit_cell(live_cell)
+      visitor.count.should == (n + 1)
+    end
+  end
 end
