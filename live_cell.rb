@@ -16,6 +16,6 @@ class LiveCell
   end
 
   def accept_visitor(visitor)
-    visitor.increment_count
+    visitor.visit_live_cell(self) 
   end
 end

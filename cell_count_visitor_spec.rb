@@ -28,12 +28,15 @@ describe CellCountVisitor do
     end
   end
   
-  it "can visit cells" do
+  it "increments its count when visiting a live cell" do
     cell_count_visitor = CellCountVisitor.new
+    cell_count_visitor.visit_live_cell(LiveCell.new)
+    cell_count_visitor.count.should == 1
+  end
 
-    mock_cell = Object.new
-    mock_cell.should_receive(:accept_visitor).with(cell_count_visitor);
-
-    cell_count_visitor.visit_cell(mock_cell) 
+  it "does not increment its count when visiting a dead cell" do
+    cell_count_visitor = CellCountVisitor.new
+    cell_count_visitor.visit_dead_cell(DeadCell.new)
+    cell_count_visitor.count.should == 0
   end
 end

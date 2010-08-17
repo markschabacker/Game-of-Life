@@ -29,22 +29,11 @@ describe LiveCell do
     end
   end
   
-  it "increments a CellCountVisitor" do
-    visitor = CellCountVisitor.new
+  it "tells a visitor to visit a live cell" do
+    mock_visitor = Object.new
     live_cell = LiveCell.new
+    mock_visitor.should_receive(:visit_live_cell).with(live_cell)
 
-    visitor.visit_cell(live_cell)
-    visitor.count.should == 1
-  end
-
-  [1, 10, 1000].each do |n|
-    it "increments a CellCountVisitor initialized to #{n}" do
-      visitor = CellCountVisitor.new
-      visitor.count = n
-      live_cell = LiveCell.new
-
-      visitor.visit_cell(live_cell)
-      visitor.count.should == (n + 1)
-    end
+    live_cell.accept_visitor(mock_visitor)
   end
 end

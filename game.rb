@@ -17,7 +17,7 @@ class Game
       neighbor_cells = @cells.select {|x| cell.coordinates.is_neighbor?(x.coordinates)}
       live_cell_count_visitor = CellCountVisitor.new  
       neighbor_cells.each do |neighbor|
-        live_cell_count_visitor.visit_cell(neighbor.cell)
+        neighbor.cell.accept_visitor(live_cell_count_visitor)
       end
       evolved_cells << CellCoordinates.new(cell.cell.alive_next_iteration?(live_cell_count_visitor.count), cell.coordinates)
     end

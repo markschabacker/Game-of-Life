@@ -9,7 +9,11 @@ class CellCountVisitor
     @count += 1
   end
 
-  def visit_cell(cell)
-    cell.accept_visitor(self)
+  def visit_live_cell(live_cell)
+    increment_count
+  end
+  
+  def visit_dead_cell(dead_cell)
+    # no-op
   end
 end
