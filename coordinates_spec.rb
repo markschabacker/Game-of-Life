@@ -22,6 +22,18 @@ describe Coordinates do
   end
 
   context "when calculating neighbors" do
+    it "returns false when asked if it is its own neighbor" do
+      source_coord = Coordinates.new(1,5)
+      source_coord.is_neighbor?(source_coord).should be false
+    end
+
+    it "returns false when asked if a coordinate at the same location is its neighbor" do
+      source_coord = Coordinates.new(4,2)
+      dest_coord = Coordinates.new(4,2)
+      source_coord.is_neighbor?(dest_coord).should be false
+      dest_coord.is_neighbor?(source_coord).should be false
+    end
+
     [-1, 1].each do |n|
       it "returns true when asked if a cell #{n} horizontal units away is its neighbor" do
         source_coord = Coordinates.new

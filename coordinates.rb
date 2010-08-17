@@ -7,7 +7,7 @@ class Coordinates
   end
 
   def is_neighbor?(other_coords)
-    Math.sqrt(2) >= distance_between(other_coords)
+    !(self.x == other_coords.x && self.y == other_coords.y) && Math.sqrt(2) >= distance_between(other_coords)
   end
   
   private
