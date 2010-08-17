@@ -21,22 +21,11 @@ describe DeadCell do
     DeadCell.new.alive_next_iteration?(3).should be_an_instance_of LiveCell
   end
 
-  it "does not increment a CellCountVisitor" do
-    visitor = CellCountVisitor.new
+  it "tells a visitor to visit a dead cell" do
+    mock_visitor = Object.new
     dead_cell = DeadCell.new
+    mock_visitor.should_receive(:visit_dead_cell).with(dead_cell)
 
-    visitor.visit_cell(dead_cell)
-    visitor.count.should == 0
-  end
-
-  [1, 10, 1000].each do |n|
-    it "does not increment a CellCountVisitor initialized to #{n}" do
-      visitor = CellCountVisitor.new
-      visitor.count = n
-      dead_cell = DeadCell.new
-
-      visitor.visit_cell(dead_cell)
-      visitor.count.should == n
-    end
+    dead_cell.accept_visitor(mock_visitor)
   end
 end
