@@ -35,6 +35,25 @@ describe Game do
   end
 
   context "can evolve itself such that" do
+
+    Spec::Matchers.define :contain_coordinates do |coordinates|
+      match do |game|
+        game.cells.select {|x| x.coordinates == coordinates}.length > 0
+      end
+    end
+
+    Spec::Matchers.define :have_dead_cell_at do |coordinates|
+      match do |game|
+        game.cells.select {|x| x.coordinates == coordinates && x.cell.instance_of?(DeadCell)}.length > 0
+      end
+    end
+
+    Spec::Matchers.define :have_live_cell_at do |coordinates|
+      match do |game|
+        game.cells.select {|x| x.coordinates == coordinates && x.cell.instance_of?(LiveCell)}.length > 0
+      end
+    end
+
     it "an empty board stays empty" do
       game = Game.new([])
       game.evolve
@@ -46,8 +65,7 @@ describe Game do
       game = Game.new([dead_cell])
       game.evolve
       game.should have(1).cells
-      game.cells[0].coordinates.should == dead_cell.coordinates
-      game.cells[0].cell.should == dead_cell.cell
+      game.should have_dead_cell_at(dead_cell.coordinates)
     end
 
     it "a single live cell dies" do
@@ -56,8 +74,27 @@ describe Game do
       game.evolve
       game.should have(1).cells
       game.cells[0].should_not equal live_cell
-      game.cells[0].coordinates.should == live_cell.coordinates
-      game.cells[0].cell.should be_an_instance_of(DeadCell)
+      game.should have_dead_cell_at(live_cell.coordinates)
+    end
+    
+    it "a 2x2 square live block lives on" do
+      top_left = CellCoordinates.new(LiveCell.new, Coordinates.new(0,0))
+      top_right = CellCoordinates.new(LiveCell.new, Coordinates.new(1,0))
+      bottom_left = CellCoordinates.new(LiveCell.new, Coordinates.new(0,1))
+      bottom_right = CellCoordinates.new(LiveCell.new, Coordinates.new(1,1))
+
+      input_cells = [top_left, top_right, bottom_left, bottom_right]
+      game = Game.new(input_cells)
+      game.evolve
+      game.should have(4).cells
+      input_cells.each do |cell|
+        game.should contain_coordinates(cell.coordinates)
+        game.should have_live_cell_at(cell.coordinates)
+      end
+    end
+
+    it "a 1x3 line becomes a 3x1 line (blinker)" do
+      false.should be true
     end
   end
 end

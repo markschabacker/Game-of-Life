@@ -2,6 +2,7 @@ require 'cell_coordinates'
 require 'coordinates'
 require 'live_cell'
 require 'dead_cell'
+require 'cell_count_visitor'
 
 class Game
   attr_accessor :cells
@@ -13,7 +14,12 @@ class Game
   def evolve
     evolved_cells = []
     @cells.each do |cell|
-      evolved_cells << CellCoordinates.new(cell.cell.alive_next_iteration?(0), cell.coordinates)
+      neighbor_cells = @cells.select {|x| cell.coordinates.is_neighbor?(x.coordinates)}
+      live_cell_count_visitor = CellCountVisitor.new  
+      neighbor_cells.each do |neighbor|
+        live_cell_count_visitor.visit_cell(neighbor.cell)
+      end
+      evolved_cells << CellCoordinates.new(cell.cell.alive_next_iteration?(live_cell_count_visitor.count), cell.coordinates)
     end
     @cells = evolved_cells
   end
