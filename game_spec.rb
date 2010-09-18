@@ -10,14 +10,14 @@ describe Game do
       game = Game.new([])
       game.should have(0).cells
     end
-    
+
     it "with size 1" do
       cell0 = Object.new
       game = Game.new([cell0])
       game.should have(1).cells
       game.cells.should include(cell0)
     end
-    
+
     [2,5,10,20,100,500].each do |n|
       it "with size #{n}" do
         added_cells = []
@@ -59,7 +59,7 @@ describe Game do
       game.evolve
       game.should have(0).cells
     end
-    
+
     it "a single dead cell stays dead" do
       dead_cell = CellCoordinates.new(DeadCell.new, Coordinates.new)
       game = Game.new([dead_cell])
@@ -76,7 +76,7 @@ describe Game do
       game.cells[0].should_not equal live_cell
       game.should have_dead_cell_at(live_cell.coordinates)
     end
-    
+
     it "a 2x2 square live block lives on" do
       top_left = CellCoordinates.new(LiveCell.new, Coordinates.new(0,0))
       top_right = CellCoordinates.new(LiveCell.new, Coordinates.new(1,0))
@@ -94,7 +94,21 @@ describe Game do
     end
 
     it "a 1x3 line becomes a 3x1 line (blinker)" do
-      false.should be true
+      initial_board = [
+        ["X","X","X","X","X"],
+        ["X","X","X","X","X"],
+        ["X","!","!","!","X"],
+        ["X","X","X","X","X"],
+        ["X","X","X","X","X"]
+      ]
+      expected_board =
+"X X X X X
+X X ! X X
+X X ! X X
+X X ! X X
+X X X X X"
+      game = GraphicalGame.new(initial_board)
+      game.evolve.should == expected_board
     end
   end
 end
