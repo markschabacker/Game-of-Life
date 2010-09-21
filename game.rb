@@ -31,6 +31,7 @@ class GraphicalGame < Game
 
   def initialize(board)
     @cells = []
+    board = board.split("\n").map(&:split)
     board.each_with_index do |r, ri|
       r.each_with_index do |c, ci|
         cell = REP_TO_CELL[c]

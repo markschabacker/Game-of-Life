@@ -94,13 +94,12 @@ describe Game do
     end
 
     it "a 1x3 line becomes a 3x1 line (blinker)" do
-      initial_board = [
-        ["X","X","X","X","X"],
-        ["X","X","X","X","X"],
-        ["X","!","!","!","X"],
-        ["X","X","X","X","X"],
-        ["X","X","X","X","X"]
-      ]
+      initial_board =
+"X X X X X
+X X X X X
+X ! ! ! X
+X X X X X
+X X X X X"
       expected_board =
 "X X X X X
 X X ! X X
